@@ -1,33 +1,28 @@
 ﻿using UnityEngine;
 
-public abstract class StatefulObject: MonoBehaviour, IHaveState, IObservableState
+public abstract class StatefulObject : MonoBehaviour
 {
-    [HideInInspector] public int Index;
-    private IStatesObserver observer;
+    private bool _changes = false;
+    public int Index { get; private set; }
 
-    [SerializeField] private int stateValue;
-
-    public int State {
-        get => stateValue;
-        set
-        {
-            stateValue = value;
-            OnSetState(value);
-
-            NotifyObserver();
-        }
-    }
-
-    public void SetObserver(int setIndex, IStatesObserver observer)
+    public bool Save(SaveObjectStateAdapter saveAdapter)
     {
-        Index = setIndex;
-        this.observer = observer;
+        _changes = false;
+        OnSave(saveAdapter);
+        return _changes;
     }
 
-    public void NotifyObserver()
+    protected virtual void OnSave(SaveObjectStateAdapter saveAdapter) { }
+    public virtual void Load(LoadObjectStateAdapter loadAdapter) { }
+    public virtual void AfterLoad() { }
+
+    protected void NewChanges()
     {
-        observer.UpdateState(Index, State);
+        _changes = true;
     }
 
-    public virtual void OnSetState(int value) { }
+    public void SetIndex(int index)
+    {
+        Index = index;
+    }
 }

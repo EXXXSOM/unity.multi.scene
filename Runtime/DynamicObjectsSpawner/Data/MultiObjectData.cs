@@ -4,18 +4,23 @@ using System;
 [Serializable]
 public class MultiObjectData
 {
-    [SerializeField] private int index;
-    [SerializeField] private Vector3 position;
-    [SerializeField] private GameObject gameObject;
+    [NonSerialized] public MultiObject MultiObject;
 
-    public int Index { get { return index; } }
-    public Vector3 Position { get { return position; } }
-    public GameObject GameObject { get { return gameObject; } }
+    [SerializeField] private MultiObjectReference _multiObjectReference;
+    [SerializeField] public string _prefabName;
+    [SerializeField] private float[] _position = new float[3];
 
-    public MultiObjectData(Vector3 position, GameObject gameObject, int index)
+    public int Index { get { return _multiObjectReference.Index; } }
+    public int MySceneHash { get { return _multiObjectReference.SceneHash; } }
+    public string PrefabName { get { return _prefabName; } }
+    public Vector3 Position => new Vector3(_position[0], _position[1], _position[2]);
+
+    public MultiObjectData(Vector3 position, string namePrefab, int index, int sceneHash)
     {
-        this.index = index;
-        this.position = position;
-        this.gameObject = gameObject;
+        _multiObjectReference = new MultiObjectReference(index, sceneHash);
+        _position[0] = position.x;
+        _position[1] = position.y;
+        _position[2] = position.z;
+        _prefabName = namePrefab;
     }
 }

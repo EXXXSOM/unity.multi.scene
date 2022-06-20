@@ -1,10 +1,10 @@
 # UnityMultiObjects
 Saving dynamically created objects in the scene.
 
-Для работы модуля необходимо содать объекты:
-
+To get started, you need to initialize:
 MultiObjectManager.Bootstrap();
 
+Load data MultiScene:
+MultiObjectManager.LoadData(MOData data);
 
-Для загрузки мульти-объектов:
-multiObjectLoader.RespawnAllItemsOnScene(gameObject.scene.name);
+//TODO
